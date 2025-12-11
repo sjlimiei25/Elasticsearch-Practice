@@ -34,8 +34,6 @@ POST _analyze
 }
 ```
 
-
-### analyze API : 필터와 토크나이저 테스트 
 #### analyzer 테스트
 ```
 POST _analyze
@@ -63,3 +61,4 @@ POST _analyze
 }
 # => [The, 10, most, loving, dog, breeds]
 ```
+### analyze API : 필터와 토크나이저 테스트 
