@@ -37,7 +37,7 @@ GET kibana_sample_data_flights/_search
 #   다른 데이터도 확인하고자할 경우 "from" 매개변수를 추가하여 가능!
 ```
 
-** 해당 인덱스의 매핑 정보 조회**
+**해당 인덱스의 매핑 정보 조회**
 ```
 GET kibana_sample_data_flights/_mapping
 ```
