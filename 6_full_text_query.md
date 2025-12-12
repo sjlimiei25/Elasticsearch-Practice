@@ -1,4 +1,5 @@
 ### 멀티 매치 쿼리
+**가중치 부여**
 ```
 GET kibana_sample_data_ecommerce/_search
 {
@@ -16,6 +17,7 @@ GET kibana_sample_data_ecommerce/_search
 }
 ```
 
+**와일드카드처리**
 ```
 GET kibana_sample_data_ecommerce/_search
 {
