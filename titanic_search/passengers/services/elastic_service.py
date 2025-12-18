@@ -34,7 +34,7 @@ class ElasticService:
         '''
         try:
             current_dir = os.path.dirname(os.path.abspath(__file__))    # 현재 파일의 위치
-            file_path = os.path.join(current_dir, 'train.csv')          # 현재 파일과 같은 위치의 trains.csv 경로
+            file_path = os.path.join(current_dir, 'train.csv')          # 현재 파일과 같은 위치의 train.csv 경로
 
             df = pd.read_csv(file_path)
             # TODO: 결측치를 제거하여 df 변수에 할당
@@ -57,7 +57,7 @@ class ElasticService:
             print(f' 데이터 초기화 중 오류 발생: {e}')
 
     def search_passenger(self, params):
-        # TODO: make_search_query를 통해 쿼리르 만들고, es.search 결과를 반환
+        # TODO: make_search_query를 통해 쿼리를 만들고, es.search 결과를 반환
         query = None
         return None
 
