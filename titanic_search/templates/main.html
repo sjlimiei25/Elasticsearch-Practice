@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Titanic Passengers</title>
+
+  <!-- bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+
+  <!-- external js -->
+  {% load static %}
+  <script src="{% static 'js/main.js' %}"></script>
+</head>
+<body>
+  <div class="container">
+
+    <div class="card m-3">
+    
+      <h1 class="card-header card-title text-center">Titanic Passenger Search</h1>
+
+      <div class="card-body">
+        <form id="form-search" class="row">
+          <div class="col-md-2">
+            <select class="form-select" name="gender">
+              <option>성별</option>
+              <option value="male">남자</option>
+              <option value="female">여자</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <select class="form-select" name="survived">
+              <option>생존여부</option>
+              <option value="1">생존</option>
+              <option value="0">사망</option>
+            </select>          
+          </div>
+          <div class="col-md-8">
+            <input type="text" class="form-control" id="keyword" name="name" placeholder="검색할 이름을 입력하세요...">
+          </div>
+        </form>
+      </div>
+
+      <div class="card-body">
+        <div class="row justify-content-between">
+          <h3 class="col-md-2">검색 결과</h3>
+          <div class="col-md-2">
+            <select id="search-size" class="form-select">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+            </select>
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">이름</th>
+              <th scope="col">나이</th>
+              <th scope="col">성별</th>
+              <th scope="col">탑승지</th>
+              <th scope="col">생존여부</th>
+            </tr>
+          </thead>
+          <tbody id="search_result"></tbody>
+        </table>
+    </div>
+  </div>
+</body>
+</html>
