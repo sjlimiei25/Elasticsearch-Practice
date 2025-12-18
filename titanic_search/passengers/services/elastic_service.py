@@ -37,7 +37,7 @@ class ElasticService:
             file_path = os.path.join(current_dir, 'train.csv')          # 현재 파일과 같은 위치의 trains.csv 경로
 
             df = pd.read_csv(file_path)
-            # 결측치를 제거하여 df 변수에 할당
+            # TODO: 결측치를 제거하여 df 변수에 할당
             df = None
 
             data_list = []
