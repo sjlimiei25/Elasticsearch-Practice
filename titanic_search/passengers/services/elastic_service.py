@@ -17,15 +17,15 @@ class ElasticService:
             return
         
         # TODO: 인덱스가 존재하지 않으면 create_index 메소드 실행
-        if not None:
-            pass
+        if not self.es.indices.exists(index=self.index):
+            self.create_index()
         
         # TODO: es.count()를 사용하여 현재 인덱스의 문서 개수 조회
         # TODO: 문서 개수가 0개라면 init_bulk_data() 실행하여 데이터 초기화
-        res = None
+        res = self.es.count(index=self.index)
         if res['count'] == 0:
             print('데이터 초기화 시작....')
-            pass
+            self.init_bulk_data()
 
     def init_bulk_data(self):
         '''
@@ -38,7 +38,7 @@ class ElasticService:
 
             df = pd.read_csv(file_path)
             # TODO: 결측치를 제거하여 df 변수에 할당
-            df = None
+            df = df.dropna()
 
             data_list = []
             for idx, row in df.iterrows():
@@ -46,11 +46,16 @@ class ElasticService:
                 #       hint: _index, _id, _source 키 필요
                 data = {
                     # 작성 위치
+                    "_index": self.index,
+                    "_id": row['PassengerId'],
+                    "_source": row.to_dict()
                 }
                 data_list.append(data)
             
             # TODO: helpers.bulk를 사용하여 리스트의 데이터를 한 번에 삽입
             # TODO: 삽입 후 데이터를 바로 검색 가능하도록 인덱스 리프레쉬
+            helpers.bulk(self.es, data_list)
+            self.es.indices.refresh(index=self.index)
             print(f'초기 데이터 초기화 완료 ')
 
         except Exception as e:
@@ -58,8 +63,8 @@ class ElasticService:
 
     def search_passenger(self, params):
         # TODO: make_search_query를 통해 쿼리를 만들고, es.search 결과를 반환
-        query = None
-        return None
+        query = self.make_search_query(params)
+        return self.es.search(index=self.index, body=query)
 
     def make_search_query(self, params):
         '''
@@ -79,21 +84,41 @@ class ElasticService:
 
         # TODO: params['name']이 있으면 Name 필드에 match 쿼리를 must에 추가
         if params.get('name'):
-            pass
+            must.append(
+                {
+                    "match": {
+                        "Name": params.get('name')
+                    }
+                }
+            )
 
         # TODO: params['gender']가 있으면 Sex 필드에 term 쿼리를 filter에 추가
         if params.get('gender'):
-            pass
+            filter.append(
+                {
+                    "term": {
+                        "Sex": params.get('gender')
+                    }
+                }
+            )
 
         # TODO: params['survived]가 있으면 Survived 필드에 term 쿼리를 filter에 추가
         if params.get('survived') is not None:
-            pass
+            filter.append(
+                {
+                    "term": {
+                        "Survived": params.get('survived')
+                    }
+                }
+            )
 
         # TODO: bool 구조(must, filter)를 가진 최종 쿼리 딕셔너리 반환
         return {
             "query": {
                 "bool": {
                     # 작성 위치
+                    "must": must,
+                    "filter": filter
                 }
             },
             "size": int(params.get('size', 10))
@@ -107,10 +132,15 @@ class ElasticService:
                 "Name": {"type": "text", "fields": {"keyword": { "type": "keyword" }}},
                 "Sex": { "type": "keyword"},
                 "Survived": { "type": "integer"},
-                # 필요한 필드 추가
+                # 필요한 필드 추가 -> 필수 아님
+                "Pclass": { "type": "integer" },
+                "Age": { "type": "float" },
+                "Fare": { "type": "float" },
+                "Embarked": { "type": "keyword" }
             }
         }
         # 작성 위치
+        self.es.indices.create(index=self.index, mappings=mapping)
         print(f'인덱스 생성 완료: {self.index}')
         
 elastic_service = ElasticService()
